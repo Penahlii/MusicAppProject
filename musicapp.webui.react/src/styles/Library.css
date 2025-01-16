@@ -15,42 +15,52 @@
 }
 
 .music-card {
-  background: #1a1a1a;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .music-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .music-card-cover {
   position: relative;
-  aspect-ratio: 1;
   width: 100%;
-  background-color: #282828;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  overflow: hidden;
 }
 
 .music-card-cover img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
 .fallback-image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #282828;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .fallback-icon {
   font-size: 48px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .play-button {
@@ -58,116 +68,108 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(29, 185, 84, 0.9);
-  border: none;
-  border-radius: 50%;
   width: 48px;
   height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 2;
-}
-
-.delete-button,
-.download-button {
-  position: absolute;
-  top: 8px;
-  background: rgba(0, 0, 0, 0.7);
-  border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  background: rgba(29, 185, 84, 0.9);
+  border: none;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.delete-button {
-  right: 8px;
-}
-
-.download-button {
-  right: 48px;
-}
-
-.music-card:hover .play-button,
-.music-card:hover .delete-button,
-.music-card:hover .download-button {
+.music-card:hover .play-button {
   opacity: 1;
 }
 
 .play-button:hover {
-  background: #1db954;
   transform: translate(-50%, -50%) scale(1.1);
+  background: rgb(29, 185, 84);
 }
 
-.delete-button:hover,
-.download-button:hover {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-.delete-button:disabled,
-.download-button:disabled,
-.play-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
+.play-icon {
+  font-size: 24px;
 }
 
 .music-card-info {
   padding: 16px;
+  flex: 1;
 }
 
-.music-title {
-  color: #fff;
-  font-size: 16px;
+.music-card-info h3 {
   margin: 0;
-  white-space: nowrap;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
   overflow: hidden;
   text-overflow: ellipsis;
-  position: relative;
-}
-
-.title-tooltip {
-  visibility: hidden;
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 14px;
   white-space: nowrap;
-  z-index: 10;
-  margin-bottom: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
-.title-tooltip::after {
-  content: '';
+.music-card-info p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.music-card-actions {
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 6px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-.music-title:hover .title-tooltip {
-  visibility: visible;
+.music-card:hover .music-card-actions {
   opacity: 1;
+}
+
+.action-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
+.action-button:hover {
+  transform: scale(1.1);
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.delete-button {
+  color: #ff4d4d;
+}
+
+.delete-button:hover {
+  background: rgba(255, 77, 77, 0.2);
+}
+
+.download-button {
+  color: #1db954;
+}
+
+.download-button:hover {
+  background: rgba(29, 185, 84, 0.2);
 }
 
 .library-loading {

@@ -171,11 +171,16 @@
   overflow: hidden;
   transition: transform 0.2s ease, background-color 0.2s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .playlist-card:hover {
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.1);
+}
+
+.playlist-card:hover .delete-playlist-button {
+  opacity: 1;
 }
 
 .playlist-card-content {
@@ -205,21 +210,97 @@
   font-size: 14px;
 }
 
+.delete-playlist-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(220, 53, 69, 0.2);
+  border: none;
+  color: #dc3545;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.delete-playlist-button:hover {
+  background: rgba(220, 53, 69, 0.4);
+  transform: scale(1.1);
+}
+
+.delete-playlist-button svg {
+  font-size: 16px;
+}
+
 .loading-message,
-.error-message,
 .no-playlists-message {
   text-align: center;
   padding: 40px;
-  color: #b3b3b3;
   font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  margin: 24px 0;
+  margin: 20px 0;
 }
 
 .error-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
   color: #dc3545;
   background: rgba(220, 53, 69, 0.1);
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+/* Delete Modal Styles */
+.delete-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.2);
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+.delete-warning .warning-icon {
+  color: #dc3545;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.delete-warning p {
+  margin: 0;
+  color: #dc3545;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.delete-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {

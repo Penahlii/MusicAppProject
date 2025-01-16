@@ -29,18 +29,18 @@ const MusicCard: FC<MusicCardProps> = ({
   };
 
   const handleDelete = async (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
-    if (window.confirm('Are you sure you want to delete this song?')) {
-      setIsDeleting(true);
-      try {
-        await onDelete(song.id);
-      } finally {
-        setIsDeleting(false);
-      }
+    setIsDeleting(true);
+    try {
+      await onDelete(song.id);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   const handleDownload = async (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     try {
       setIsDownloading(true);
@@ -63,7 +63,7 @@ const MusicCard: FC<MusicCardProps> = ({
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${song.title}.mp3`; // Set the filename
+      a.download = `${song.title}.mp3`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -77,7 +77,7 @@ const MusicCard: FC<MusicCardProps> = ({
   };
 
   return (
-    <div className="music-card">
+    <div className="music-card" onClick={() => onPlayPause(song)}>
       <div className="music-card-cover">
         {!imageError ? (
           <img 
@@ -92,7 +92,11 @@ const MusicCard: FC<MusicCardProps> = ({
         )}
         <button 
           className="play-button"
-          onClick={() => onPlayPause(song)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onPlayPause(song);
+          }}
           disabled={isDeleting}
         >
           {isPlaying ? (
@@ -101,10 +105,20 @@ const MusicCard: FC<MusicCardProps> = ({
             <BsPlayFill className="play-icon" />
           )}
         </button>
+      </div>
+      <div className="music-card-info">
+        <h3>{song.title}</h3>
+        <p>{song.artist}</p>
+      </div>
+      <div className="music-card-actions">
         {showDeleteButton && (
-          <button 
-            className="delete-button"
-            onClick={handleDelete}
+          <button
+            className="action-button delete-button"
+            onClick={(e) => {
+              if (window.confirm('Are you sure you want to delete this song?')) {
+                handleDelete(e);
+              }
+            }}
             disabled={isDeleting}
             title="Delete song"
           >
@@ -113,7 +127,7 @@ const MusicCard: FC<MusicCardProps> = ({
         )}
         {showDownloadButton && (
           <button
-            className="download-button"
+            className="action-button download-button"
             onClick={handleDownload}
             disabled={isDownloading}
             title="Download song"
@@ -121,12 +135,6 @@ const MusicCard: FC<MusicCardProps> = ({
             <BsDownload />
           </button>
         )}
-      </div>
-      <div className="music-card-info">
-        <h3 className="music-title" title={song.title}>
-          {song.title}
-          <span className="title-tooltip">{song.title}</span>
-        </h3>
       </div>
     </div>
   );

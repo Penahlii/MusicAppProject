@@ -100,8 +100,8 @@ const LibraryPage = ({ onSongSelect, currentSong, isPlaying }: LibraryPageProps)
               key={song.id}
               song={song}
               isPlaying={currentSong?.id === song.id && isPlaying}
-              onPlayPause={() => onSongSelect(song)}
-              onDelete={() => handleDeleteSong(song.id)}
+              onPlayPause={onSongSelect}
+              onDelete={handleDeleteSong}
               showDeleteButton={true}
             />
           ))}
