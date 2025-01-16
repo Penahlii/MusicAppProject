@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using MusicApp.Infrastructure.Business.Abstraction;
 using MusicApp.Infrastructure.Business.Concrete;
@@ -5,6 +6,9 @@ using MusicApp.Infrastructure.DataAccess.Abstraction;
 using MusicApp.Infrastructure.DataAccess.Concrete.EFEntityFramework;
 using MusicApp.Infrastructure.Entities.Data;
 using MusicApp.Infrastructure.Middlewares;
+using MusicApp.Music.MusicService.Helpers;
+using MusicApp.Music.MusicService.Services.Abstraction;
+using MusicApp.Music.MusicService.Services.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,11 +29,31 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<FormOptions>(o =>
+{
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
+});
+
 // Assigning the Database
 
 builder.Services.AddDbContext<MusicDataBaseContext>(opt =>
 {
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("MusicDbConnection"));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("ProductionMusic"));
+});
+
+
+// Add Cloudinary
+
+builder.Services.AddSingleton<CloudinaryService>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    return new CloudinaryService(
+        configuration["Cloudinary:CloudName"],
+        configuration["Cloudinary:ApiKey"],
+        configuration["Cloudinary:ApiSecret"]
+    );
 });
 
 // Add Data Accesses
@@ -47,6 +71,14 @@ builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IPlaylistService, PlaylistService>();
 builder.Services.AddScoped<IPlaylistSongService, PlaylistSongService>();
 builder.Services.AddScoped<ISongService, SongService>();
+
+// Add Project-In Services
+
+builder.Services.AddScoped<ISongInService, SongInService>();
+
+// Add AutoMapper
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

@@ -1,0 +1,114 @@
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background-color: #000000;
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.sidebar-header {
+  margin-bottom: 40px;
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.logo-icon {
+  margin-left: 16px;
+  font-size: 24px;
+  color: #1db954;
+}
+
+.app-name {
+  font-size: 24px;
+  color: #1db954;
+  margin: 0;
+}
+
+.user-info {
+  padding: 16px 24px;
+  border-bottom: 1px solid #282828;
+  margin-bottom: 24px;
+}
+
+.username {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email {
+  color: #b3b3b3;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  color: #b3b3b3;
+  text-decoration: none;
+  border-radius: 4px;
+  margin: 4px 0;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  color: #fff;
+}
+
+.nav-item.active {
+  color: #fff;
+  background-color: #282828;
+}
+
+.nav-icon {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.sign-out-btn {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  margin: 8px;
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  cursor: pointer;
+  width: calc(100% - 16px);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.sign-out-btn:hover {
+  color: #fff;
+  background-color: #282828;
+}
+
+/* Add margin to the main content to prevent overlap with sidebar */
+.App > *:not(.sidebar):not(.music-player) {
+  margin-left: 240px;
+}

@@ -6,10 +6,8 @@ public class Song : IEntity
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
-    public string Artist { get; set; } = string.Empty;
-    public string? Album { get; set; }
+    public string? AlbumCover { get; set; }
     public string? Genre { get; set; }
-    public int? Duration { get; set; } // Duration in seconds
     public string FilePath { get; set; } = string.Empty;
     public string? UploadedBy { get; set; } // UserId from Identity Service
     public DateTime UploadedAt { get; set; } = DateTime.UtcNow;

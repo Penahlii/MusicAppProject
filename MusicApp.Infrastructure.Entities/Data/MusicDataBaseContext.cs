@@ -51,10 +51,6 @@ public class MusicDataBaseContext : DbContext
         modelBuilder.Entity<Comment>()
             .HasKey(c => c.Id);
 
-        // Indexing for performance
-        modelBuilder.Entity<Song>()
-            .HasIndex(s => s.Artist);
-
         modelBuilder.Entity<Playlist>()
             .HasIndex(p => p.UserId);
 

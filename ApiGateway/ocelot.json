@@ -23,6 +23,90 @@
       ],
       "UpstreamPathTemplate": "/auth/signin",
       "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Song/upload",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/song/upload",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Song/usersongs/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/song/usersongs/{userId}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Song/{songId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/song/{songId}",
+      "UpstreamHttpMethod": [ "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/update-profile",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identitymicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/update-profile",
+      "UpstreamHttpMethod": [ "Put" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Song/all-songs",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/song/all-songs",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Song/download/{songId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/song/download/{songId}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/delete-account/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identitymicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/delete-account/{userId}",
+      "UpstreamHttpMethod": [ "Delete" ]
     }
   ],
   "GlobalConfiguration": {

@@ -1,0 +1,192 @@
+.music-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background-color: #181818;
+  border-top: 1px solid #282828;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 100;
+}
+
+.player-left {
+  flex: 0 1 30%;
+  display: flex;
+  align-items: center;
+  min-width: 180px;
+}
+
+.player-cover {
+  width: 56px;
+  height: 56px;
+  border-radius: 4px;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+.player-song-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.player-title {
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.player-center {
+  flex: 0 1 40%;
+  max-width: 722px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-controls {
+  margin-bottom: 8px;
+}
+
+.play-pause-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.play-pause-button:hover {
+  transform: scale(1.1);
+}
+
+.play-pause-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.player-progress {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background-color: #4f4f4f;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-bar:hover .progress-bar-fill {
+  background-color: #1db954;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #b3b3b3;
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.time-current,
+.time-total {
+  color: #b3b3b3;
+  font-size: 11px;
+  min-width: 40px;
+}
+
+.player-right {
+  flex: 0 1 30%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.volume-button,
+.close-button {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.volume-button:hover,
+.close-button:hover {
+  color: #fff;
+}
+
+.volume-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.close-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.volume-slider {
+  width: 93px;
+  height: 4px;
+  -webkit-appearance: none;
+  background-color: #4f4f4f;
+  border-radius: 2px;
+  outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+  border: none;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+  border: none;
+}
+
+.volume-slider:hover::-webkit-slider-thumb {
+  background-color: #1db954;
+}
+
+.volume-slider:hover::-moz-range-thumb {
+  background-color: #1db954;
+}
+
+/* Add margin to the main content to prevent overlap with the player */
+.App {
+  margin-bottom: 90px;
+}

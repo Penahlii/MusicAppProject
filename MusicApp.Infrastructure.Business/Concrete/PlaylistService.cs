@@ -29,9 +29,19 @@ public class PlaylistService : IPlaylistService
         return await _playlistDA.GetList(filter);
     }
 
+    public async Task<Playlist> GetAsync(Expression<Func<Playlist, bool>> filter = null)
+    {
+        return await _playlistDA.Get(filter);
+    }
+
     public async Task<Playlist> GetByIdAsync(int id)
     {
         return await _playlistDA.Get(ps => ps.Id == id);
+    }
+
+    public async Task<Playlist?> GetPlaylistByIdAsync(int playlistId, string userId)
+    {
+        return await _playlistDA.GetPlaylistByIdAsync(playlistId, userId);
     }
 
     public async Task UpdateAsync(Playlist playlist)
