@@ -98,6 +98,38 @@ public class PlaylistInService : IPlaylistInService
         return ServiceResponse<List<Playlist>>.Success(playlists, "Playlists retrieved successfully.");
     }
 
+    public async Task<ServiceResponse<List<SongDTO>>> GetSongsByPlaylistIdAsync(int playlistId, string userId)
+    {
+        // Get the playlist with songs
+        var playlist = await _playlistService.GetPlaylistByIdAsync(playlistId, userId);
+
+        if (playlist == null)
+        {
+            return ServiceResponse<List<SongDTO>>.Failure("Playlist not found or you don't have permission to access it.");
+        }
+
+        if (playlist.PlaylistSongs == null || !playlist.PlaylistSongs.Any())
+        {
+            return ServiceResponse<List<SongDTO>>.Failure("No songs found in this playlist.");
+        }
+
+        // Fetch the song details
+        var songIds = playlist.PlaylistSongs.Select(ps => ps.SongId).ToList();
+        var songs = await _songService.GetAllAsync(s => songIds.Contains(s.Id));
+
+        var songDtos = songs.Select(song => new SongDTO
+        {
+            Id = song.Id,
+            Title = song.Title,
+            AlbumCover = song.AlbumCover,
+            FilePath = song.FilePath,
+            UploadedBy = song.UploadedBy,
+            UploadedAt = song.UploadedAt
+        }).ToList();
+
+        return ServiceResponse<List<SongDTO>>.Success(songDtos, "Songs retrieved successfully.");
+    }
+
     public async Task<ServiceResponse<bool>> RemovePlaylistAsync(int playlistId, string userId)
     {
         var playlist = await _playlistService.GetPlaylistByIdAsync(playlistId, userId);

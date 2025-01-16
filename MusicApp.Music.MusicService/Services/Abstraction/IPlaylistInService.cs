@@ -12,4 +12,5 @@ public interface IPlaylistInService
     Task<ServiceResponse<List<Playlist>>> GetPlaylistsByUserIdAsync(string userId);
     Task<ServiceResponse<bool>> RemoveSongFromPlaylistAsync(RemoveSongFromPlaylistRequest request);
     Task<ServiceResponse<bool>> RemovePlaylistAsync(int playlistId, string userId);
+    Task<ServiceResponse<List<SongDTO>>> GetSongsByPlaylistIdAsync(int playlistId, string userId);
 }
