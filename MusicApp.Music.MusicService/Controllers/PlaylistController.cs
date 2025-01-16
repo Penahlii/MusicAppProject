@@ -96,7 +96,7 @@ public class PlaylistController : ControllerBase
         return Ok(new { message = "Playlist removed successfully." });
     }
 
-    [HttpGet("playlist-songs")]
+    [HttpPost("playlist-songs")]
     public async Task<IActionResult> GetSongsByPlaylist([FromBody] GetSongsOfPlaylistRequest request)
     {
         var result = await _playlistInService.GetSongsByPlaylistIdAsync(request.PlaylistId, request.UserId);

@@ -9,6 +9,7 @@ import MusicPlayer from './components/Player/MusicPlayer';
 import ProfilePage from './components/Profile/ProfilePage';
 import HomePage from './components/Home/HomePage';
 import PlaylistPage from './components/Playlist/PlaylistPage';
+import PlaylistDetailsPage from './components/Playlist/PlaylistDetailsPage';
 import { Song } from './types/music';
 import './App.css';
 
@@ -78,6 +79,20 @@ function App() {
             <Route path="/library" element={
               <ProtectedRoute>
                 <LibraryPage 
+                  onSongSelect={handleSongSelect}
+                  currentSong={currentSong}
+                  isPlaying={isPlaying}
+                />
+              </ProtectedRoute>
+            } />
+            <Route path="/playlist" element={
+              <ProtectedRoute>
+                <PlaylistPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/playlist/:id" element={
+              <ProtectedRoute>
+                <PlaylistDetailsPage 
                   onSongSelect={handleSongSelect}
                   currentSong={currentSong}
                   isPlaying={isPlaying}

@@ -178,7 +178,7 @@
         }
       ],
       "UpstreamPathTemplate": "/playlist/playlist-songs",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Post" ]
     }
   ],
   "GlobalConfiguration": {

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BsMusicNoteList, BsPlus, BsExclamationTriangle, BsTrash } from 'react-icons/bs';
 import { parseJwt } from '../../utils/auth';
 import { Playlist, ApiResponse } from '../../types/playlist';
 import '../../styles/Playlist.css';
 
 const PlaylistPage = () => {
+  const navigate = useNavigate();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null);
@@ -162,6 +164,10 @@ const PlaylistPage = () => {
     }
   };
 
+  const handlePlaylistClick = (playlist: Playlist) => {
+    navigate(`/playlist/${playlist.id}`);
+  };
+
   return (
     <div className="playlist-page">
       <div className="playlist-header">
@@ -178,7 +184,6 @@ const PlaylistPage = () => {
         </button>
       </div>
 
-      {/* Playlists Grid */}
       <div className="playlists-grid">
         {isLoading ? (
           <div className="loading-message">Loading playlists...</div>
@@ -188,14 +193,23 @@ const PlaylistPage = () => {
           <div className="no-playlists-message">You don't have any playlists yet.</div>
         ) : (
           playlists.map((playlist) => (
-            <div key={playlist.id} className="playlist-card">
+            <div 
+              key={playlist.id} 
+              className="playlist-card"
+              onClick={() => handlePlaylistClick(playlist)}
+            >
               <div className="playlist-card-content">
                 <BsMusicNoteList className="playlist-card-icon" />
                 <h3>{playlist.title}</h3>
-                <p className="playlist-date">Created: {new Date(playlist.createdAt).toLocaleDateString()}</p>
+                <p className="playlist-date">
+                  Created: {new Date(playlist.createdAt).toLocaleDateString()}
+                </p>
                 <button 
                   className="delete-playlist-button"
-                  onClick={() => handleDeleteClick(playlist)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteClick(playlist);
+                  }}
                 >
                   <BsTrash />
                 </button>
