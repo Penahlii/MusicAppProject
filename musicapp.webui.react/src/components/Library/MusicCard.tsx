@@ -1,6 +1,9 @@
 import { FC, useState } from 'react';
-import { BsPlayFill, BsPauseFill, BsMusicNote, BsTrash, BsDownload } from 'react-icons/bs';
+import { BsPlayFill, BsPauseFill, BsMusicNote, BsTrash, BsDownload, BsPlus } from 'react-icons/bs';
 import { Song } from '../../types/music';
+import { Playlist } from '../../types/playlist';
+import { parseJwt } from '../../utils/auth';
+import ContextMenu from '../Common/ContextMenu';
 import '../../styles/Library.css';
 
 interface MusicCardProps {
@@ -23,9 +26,80 @@ const MusicCard: FC<MusicCardProps> = ({
   const [imageError, setImageError] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [isAddingToPlaylist, setIsAddingToPlaylist] = useState(false);
 
   const handleImageError = () => {
     setImageError(true);
+  };
+
+  const handleContextMenu = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const claims = parseJwt(token);
+    const userId = claims.nameidentifier;
+
+    try {
+      const response = await fetch(`http://localhost:7000/playlist/user-playlists/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch playlists');
+      }
+
+      const result = await response.json();
+      setPlaylists(result.data || []);
+      setContextMenu({ x: e.clientX, y: e.clientY });
+    } catch (error) {
+      console.error('Error fetching playlists:', error);
+      setPlaylists([]);
+      setContextMenu({ x: e.clientX, y: e.clientY });
+    }
+  };
+
+  const handleAddToPlaylist = async (playlistId: number) => {
+    try {
+      setIsAddingToPlaylist(true);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const claims = parseJwt(token);
+      const userId = claims.nameidentifier;
+
+      const response = await fetch('http://localhost:7000/playlist/add-song', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          playlistId,
+          songId: song.id,
+          userId
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to add song to playlist');
+      }
+
+      alert('Song added to playlist successfully!');
+    } catch (error) {
+      console.error('Error adding song to playlist:', error);
+      alert(error instanceof Error ? error.message : 'Failed to add song to playlist');
+    } finally {
+      setIsAddingToPlaylist(false);
+      setContextMenu(null);
+    }
   };
 
   const handleDelete = async (e: React.MouseEvent) => {
@@ -77,66 +151,102 @@ const MusicCard: FC<MusicCardProps> = ({
   };
 
   return (
-    <div className="music-card" onClick={() => onPlayPause(song)}>
-      <div className="music-card-cover">
-        {!imageError ? (
-          <img 
-            src={song.albumCover}
-            alt={song.title}
-            onError={handleImageError}
-          />
-        ) : (
-          <div className="fallback-image">
-            <BsMusicNote className="fallback-icon" />
-          </div>
-        )}
-        <button 
-          className="play-button"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onPlayPause(song);
-          }}
-          disabled={isDeleting}
-        >
-          {isPlaying ? (
-            <BsPauseFill className="play-icon" />
+    <>
+      <div 
+        className="music-card" 
+        onClick={() => onPlayPause(song)}
+        onContextMenu={handleContextMenu}
+      >
+        <div className="music-card-cover">
+          {!imageError ? (
+            <img 
+              src={song.albumCover}
+              alt={song.title}
+              onError={handleImageError}
+            />
           ) : (
-            <BsPlayFill className="play-icon" />
+            <div className="fallback-image">
+              <BsMusicNote className="fallback-icon" />
+            </div>
           )}
-        </button>
-      </div>
-      <div className="music-card-info">
-        <h3>{song.title}</h3>
-        <p>{song.artist}</p>
-      </div>
-      <div className="music-card-actions">
-        {showDeleteButton && (
-          <button
-            className="action-button delete-button"
+          <button 
+            className="play-button"
             onClick={(e) => {
-              if (window.confirm('Are you sure you want to delete this song?')) {
-                handleDelete(e);
-              }
+              e.preventDefault();
+              e.stopPropagation();
+              onPlayPause(song);
             }}
             disabled={isDeleting}
-            title="Delete song"
           >
-            <BsTrash />
+            {isPlaying ? (
+              <BsPauseFill className="play-icon" />
+            ) : (
+              <BsPlayFill className="play-icon" />
+            )}
           </button>
-        )}
-        {showDownloadButton && (
-          <button
-            className="action-button download-button"
-            onClick={handleDownload}
-            disabled={isDownloading}
-            title="Download song"
-          >
-            <BsDownload />
-          </button>
-        )}
+        </div>
+        <div className="music-card-info">
+          <h3>{song.title}</h3>
+          <p>{song.artist}</p>
+        </div>
+        <div className="music-card-actions">
+          {showDeleteButton && (
+            <button
+              className="action-button delete-button"
+              onClick={(e) => {
+                if (window.confirm('Are you sure you want to delete this song?')) {
+                  handleDelete(e);
+                }
+              }}
+              disabled={isDeleting}
+              title="Delete song"
+            >
+              <BsTrash />
+            </button>
+          )}
+          {showDownloadButton && (
+            <button
+              className="action-button download-button"
+              onClick={handleDownload}
+              disabled={isDownloading}
+              title="Download song"
+            >
+              <BsDownload />
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+
+      {contextMenu && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={() => setContextMenu(null)}
+        >
+          <div className="context-menu-item">
+            Add to Playlist
+            <div className="context-menu-submenu">
+              {playlists.length === 0 ? (
+                <div className="no-playlists-message">
+                  Create a playlist first!
+                </div>
+              ) : (
+                playlists.map(playlist => (
+                  <div
+                    key={playlist.id}
+                    className="context-menu-item"
+                    onClick={() => handleAddToPlaylist(playlist.id)}
+                  >
+                    <BsPlus style={{ marginRight: '8px' }} />
+                    {playlist.title}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </ContextMenu>
+      )}
+    </>
   );
 };
 
