@@ -107,6 +107,66 @@
       ],
       "UpstreamPathTemplate": "/auth/delete-account/{userId}",
       "UpstreamHttpMethod": [ "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Playlist/create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/playlist/create",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Playlist/add-song",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/playlist/add-song",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Playlist/user-playlists/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/playlist/user-playlists/{userId}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Playlist/remove-song",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/playlist/remove-song",
+      "UpstreamHttpMethod": [ "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Playlist/remove-playlist",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/playlist/remove-playlist",
+      "UpstreamHttpMethod": [ "Delete" ]
     }
   ],
   "GlobalConfiguration": {

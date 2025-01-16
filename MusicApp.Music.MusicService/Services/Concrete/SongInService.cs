@@ -125,34 +125,6 @@ public class SongInService : ISongInService
         return ServiceResponse<List<SongDTO>>.Success(songDtos, "Songs retrieved successfully.");
     }
 
-    public async Task<ServiceResponse<bool>> AddSongToPlaylistAsync(AddSongToPlaylistRequest request)
-    {
-        var playlist = await _playlistService.GetPlaylistByIdAsync(request.PlaylistId, request.UserId);
-
-        if (playlist == null)
-        {
-            return ServiceResponse<bool>.Failure("Playlist not found.");
-        }
-
-        var song = await _songService.GetByIdAsync(request.SongId);
-
-        if (song == null)
-        {
-            return ServiceResponse<bool>.Failure("Song not found.");
-        }
-
-        var playlistSong = new PlaylistSong
-        {
-            PlaylistId = request.PlaylistId,
-            SongId = request.SongId
-        };
-
-        playlist.PlaylistSongs.Add(playlistSong);
-
-        await _playlistService.UpdateAsync(playlist);
-
-        return ServiceResponse<bool>.Success(true, "Song added to playlist successfully.");
-    }
 
     public async Task<List<SongDTO>> GetAllSongsOfUser(string userId)
     {

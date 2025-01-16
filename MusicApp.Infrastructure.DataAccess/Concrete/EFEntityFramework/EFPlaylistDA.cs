@@ -16,4 +16,15 @@ public class EFPlaylistDA : EFEntityRepositoryBase<Playlist, MusicDataBaseContex
         .Include(p => p.PlaylistSongs)
         .FirstOrDefaultAsync(p => p.Id == playlistId && p.UserId == userId);
     }
+
+    public async Task RemovePlaylistSongsAsync(int playlistId)
+    {
+        var playlistSongs = await GetDbSet<PlaylistSong>()
+            .Where(ps => ps.PlaylistId == playlistId)
+            .ToListAsync(); // Convert IQueryable to List asynchronously
+
+        GetDbSet<PlaylistSong>().RemoveRange(playlistSongs);
+        await SaveChangesAsync();
+    }
+
 }

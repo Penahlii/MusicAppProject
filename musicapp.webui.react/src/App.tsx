@@ -8,6 +8,7 @@ import LibraryPage from './components/Library/LibraryPage';
 import MusicPlayer from './components/Player/MusicPlayer';
 import ProfilePage from './components/Profile/ProfilePage';
 import HomePage from './components/Home/HomePage';
+import PlaylistPage from './components/Playlist/PlaylistPage';
 import { Song } from './types/music';
 import './App.css';
 
@@ -91,6 +92,11 @@ function App() {
             <Route path="/profile" element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/playlists" element={
+              <ProtectedRoute>
+                <PlaylistPage />
               </ProtectedRoute>
             } />
           </Routes>

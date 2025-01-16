@@ -11,7 +11,6 @@ public interface ISongInService
     Task<ServiceResponse<bool>> DeleteSongAsync(int songId);
     Task<ServiceResponse<SongDTO>> GetSongByIdAsync(int songId);
     Task<ServiceResponse<List<SongDTO>>> GetAllSongsAsync();
-    Task<ServiceResponse<bool>> AddSongToPlaylistAsync(AddSongToPlaylistRequest request);
     Task<List<SongDTO>> GetAllSongsOfUser(string userId);
     Task<ServiceResponse<byte[]>> DownloadSongAsync(int songId);
 }

@@ -43,6 +43,10 @@ builder.Services.AddDbContext<MusicDataBaseContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("ProductionMusic"));
 });
 
+builder.Services.AddDbContext<IdentityDataBaseContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("ProductionIdentity"));
+});
 
 // Add Cloudinary
 
@@ -75,6 +79,7 @@ builder.Services.AddScoped<ISongService, SongService>();
 // Add Project-In Services
 
 builder.Services.AddScoped<ISongInService, SongInService>();
+builder.Services.AddScoped<IPlaylistInService, PlaylistInService>();
 
 // Add AutoMapper
 

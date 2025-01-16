@@ -6,4 +6,5 @@ namespace MusicApp.Infrastructure.DataAccess.Abstraction;
 public interface IPlaylistDA : IEntityRepository<Playlist>
 {
     Task<Playlist?> GetPlaylistByIdAsync(int playlistId, string userId);
+    Task RemovePlaylistSongsAsync(int playlistId);
 }

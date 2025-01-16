@@ -12,4 +12,5 @@ public interface IPlaylistService
     Task UpdateAsync(Playlist playlist);
     Task<Playlist> GetAsync(Expression<Func<Playlist, bool>> filter = null);
     Task<Playlist?> GetPlaylistByIdAsync(int playlistId, string userId);
+    Task RemovePlaylistSongsAsync(int playlistId);
 }

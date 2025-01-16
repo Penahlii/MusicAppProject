@@ -54,4 +54,14 @@ public class EFEntityRepositoryBase<TEntity, TContext>
     {
         return _context.Set<TEntity>();
     }
+
+    protected DbSet<T> GetDbSet<T>() where T : class
+    {
+        return _context.Set<T>();
+    }
+
+    public async Task<int> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync();
+    }
 }

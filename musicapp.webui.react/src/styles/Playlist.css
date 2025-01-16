@@ -1,0 +1,264 @@
+.playlist-page {
+  padding: 40px;
+}
+
+.playlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.playlist-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.playlist-icon {
+  font-size: 32px;
+  color: #fff;
+}
+
+.playlist-title h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 32px;
+}
+
+.create-playlist-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #1db954;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.create-playlist-button svg {
+  font-size: 24px;
+}
+
+.create-playlist-button:hover {
+  background-color: #1ed760;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #282828;
+  padding: 32px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.modal-content h2 {
+  color: #fff;
+  margin: 0 0 24px 0;
+  font-size: 24px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #1db954;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.cancel-button,
+.create-button {
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-button {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cancel-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.create-button {
+  background-color: #1db954;
+  color: #fff;
+  border: none;
+}
+
+.create-button:hover {
+  background-color: #1ed760;
+}
+
+.cancel-button:disabled,
+.create-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+/* Playlist Grid Styles */
+.playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+  padding: 24px 0;
+}
+
+.playlist-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.playlist-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.playlist-card-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.playlist-card-icon {
+  font-size: 48px;
+  color: #1db954;
+  margin-bottom: 16px;
+}
+
+.playlist-card h3 {
+  color: #fff;
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.playlist-date {
+  color: #b3b3b3;
+  margin: 0;
+  font-size: 14px;
+}
+
+.loading-message,
+.error-message,
+.no-playlists-message {
+  text-align: center;
+  padding: 40px;
+  color: #b3b3b3;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.error-message {
+  color: #dc3545;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+@media (max-width: 768px) {
+  .playlist-page {
+    padding: 20px;
+  }
+
+  .playlist-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .create-playlist-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .modal-content {
+    margin: 20px;
+  }
+
+  .playlists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .playlist-card-content {
+    padding: 16px;
+  }
+
+  .playlist-card-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .playlists-grid {
+    grid-template-columns: 1fr;
+  }
+}

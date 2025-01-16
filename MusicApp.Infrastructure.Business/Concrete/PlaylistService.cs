@@ -44,6 +44,11 @@ public class PlaylistService : IPlaylistService
         return await _playlistDA.GetPlaylistByIdAsync(playlistId, userId);
     }
 
+    public async Task RemovePlaylistSongsAsync(int playlistId)
+    {
+        await _playlistDA.RemovePlaylistSongsAsync(playlistId);
+    }
+
     public async Task UpdateAsync(Playlist playlist)
     {
         await _playlistDA.Update(playlist);

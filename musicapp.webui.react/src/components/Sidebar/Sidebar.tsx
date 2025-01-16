@@ -1,9 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { BiHomeAlt, BiUpload, BiLibrary, BiUser } from 'react-icons/bi';
+import { BsMusicNote, BsMusicNoteList, BsUpload, BsHeart, BsCollection, BsPerson, BsBoxArrowLeft, BsHouse } from 'react-icons/bs';
 import { MdFavorite } from 'react-icons/md';
 import { FiLogOut } from 'react-icons/fi';
-import { BsMusicNote } from 'react-icons/bs';
 import { parseJwt } from '../../utils/auth';
 import '../../styles/Sidebar.css';
 
@@ -65,32 +64,38 @@ const Sidebar: FC<SidebarProps> = ({ onSignOut }) => {
       </div>
 
       <nav className="sidebar-nav">
-        <Link to="/" className="nav-item">
-          <BiHomeAlt className="nav-icon" />
+        <Link to="/" className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}>
+          <BsHouse className="nav-icon" />
           <span>Home</span>
         </Link>
         <Link to="/upload" className={`nav-item ${location.pathname === '/upload' ? 'active' : ''}`}>
-          <BiUpload className="nav-icon" />
+          <BsUpload className="nav-icon" />
           <span>Upload</span>
         </Link>
         <Link to="/library" className={`nav-item ${location.pathname === '/library' ? 'active' : ''}`}>
-          <BiLibrary className="nav-icon" />
+          <BsCollection className="nav-icon" />
           <span>Library</span>
+        </Link>
+        <Link to="/playlists" className={`nav-item ${location.pathname === '/playlists' ? 'active' : ''}`}>
+          <BsMusicNoteList className="nav-icon" />
+          <span>Playlists</span>
         </Link>
         <Link to="/favorites" className={`nav-item ${location.pathname === '/favorites' ? 'active' : ''}`}>
           <MdFavorite className="nav-icon" />
           <span>Favorites</span>
         </Link>
-        <Link to="/profile" className="nav-item">
-          <BiUser className="nav-icon" />
+        <Link to="/profile" className={`nav-item ${location.pathname === '/profile' ? 'active' : ''}`}>
+          <BsPerson className="nav-icon" />
           <span>Profile</span>
         </Link>
       </nav>
 
-      <button className="sign-out-btn" onClick={handleSignOut}>
-        <FiLogOut className="nav-icon" />
-        <span>Sign Out</span>
-      </button>
+      <div className="sidebar-footer">
+        <button className="nav-item sign-out" onClick={handleSignOut}>
+          <BsBoxArrowLeft className="nav-icon" />
+          <span>Sign Out</span>
+        </button>
+      </div>
     </div>
   );
 };
