@@ -10,6 +10,7 @@ import ProfilePage from './components/Profile/ProfilePage';
 import HomePage from './components/Home/HomePage';
 import PlaylistPage from './components/Playlist/PlaylistPage';
 import PlaylistDetailsPage from './components/Playlist/PlaylistDetailsPage';
+import FavoritesPage from './components/Favorites/FavoritesPage';
 import { Song } from './types/music';
 import './App.css';
 
@@ -101,7 +102,7 @@ function App() {
             } />
             <Route path="/favorites" element={
               <ProtectedRoute>
-                <div>Favorites Page</div>
+                <FavoritesPage />
               </ProtectedRoute>
             } />
             <Route path="/profile" element={
