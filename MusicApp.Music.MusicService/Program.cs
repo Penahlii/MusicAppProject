@@ -9,6 +9,7 @@ using MusicApp.Infrastructure.Middlewares;
 using MusicApp.Music.MusicService.Helpers;
 using MusicApp.Music.MusicService.Services.Abstraction;
 using MusicApp.Music.MusicService.Services.Concrete;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,15 @@ builder.Services.Configure<FormOptions>(o =>
     o.ValueLengthLimit = int.MaxValue;
     o.MultipartBodyLengthLimit = int.MaxValue;
     o.MemoryBufferThreshold = int.MaxValue;
+});
+
+// Add Multiplexer for Redis Configuration
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var configuration = ConfigurationOptions.Parse("redis-server:6379", true);
+    configuration.AbortOnConnectFail = false; 
+    return ConnectionMultiplexer.Connect(configuration);
 });
 
 // Assigning the Database
@@ -80,6 +90,7 @@ builder.Services.AddScoped<ISongService, SongService>();
 
 builder.Services.AddScoped<ISongInService, SongInService>();
 builder.Services.AddScoped<IPlaylistInService, PlaylistInService>();
+builder.Services.AddScoped<IFavoriteInService, FavoriteInService>();
 
 // Add AutoMapper
 
