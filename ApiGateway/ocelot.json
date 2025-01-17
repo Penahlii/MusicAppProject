@@ -179,6 +179,42 @@
       ],
       "UpstreamPathTemplate": "/playlist/playlist-songs",
       "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Favorite/add",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/favorite/add",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Favorite/user-favorites/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/favorite/user-favorites/{userId}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Favorite/remove",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/favorite/remove",
+      "UpstreamHttpMethod": [ "Delete" ]
     }
   ],
   "GlobalConfiguration": {
