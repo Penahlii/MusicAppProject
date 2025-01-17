@@ -215,6 +215,18 @@
       ],
       "UpstreamPathTemplate": "/favorite/remove",
       "UpstreamHttpMethod": [ "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Favorite/check-favorite",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "musicmicroservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/favorite/check-favorite",
+      "UpstreamHttpMethod": [ "Get" ]
     }
   ],
   "GlobalConfiguration": {

@@ -37,4 +37,15 @@ public class FavoriteController : ControllerBase
         await _favoriteInService.RemoveFromFavoritesAsync(userId, musicId);
         return Ok(new { message = "Song removed from favorites successfully." });
     }
+
+    [HttpGet("check-favorite")]
+    public async Task<bool> CheckFavorite([FromQuery] string userId, [FromQuery] int musicId)
+    {
+        var favoriteSongs = await _favoriteInService.GetFavoriteSongsAsync(userId);
+        foreach (var song in favoriteSongs)
+        {
+            if (song.Id == musicId) return true;
+        }
+        return false;
+    }
 }
