@@ -102,7 +102,11 @@ function App() {
             } />
             <Route path="/favorites" element={
               <ProtectedRoute>
-                <FavoritesPage />
+                <FavoritesPage 
+                  onSongSelect={handleSongSelect}
+                  currentSong={currentSong}
+                  isPlaying={isPlaying}
+                />
               </ProtectedRoute>
             } />
             <Route path="/profile" element={

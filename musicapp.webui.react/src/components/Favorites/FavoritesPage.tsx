@@ -4,10 +4,15 @@ import { Song } from '../../types/music';
 import { parseJwt } from '../../utils/auth';
 import '../../styles/Favorites.css';
 
-const FavoritesPage: FC = () => {
+interface FavoritesPageProps {
+  onSongSelect: (song: Song) => void;
+  currentSong: Song | null;
+  isPlaying: boolean;
+}
+
+const FavoritesPage: FC<FavoritesPageProps> = ({ onSongSelect, currentSong, isPlaying }) => {
   const [favorites, setFavorites] = useState<Song[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const fetchFavorites = async () => {
@@ -21,9 +26,6 @@ const FavoritesPage: FC = () => {
       const claims = parseJwt(token);
       const userId = claims.nameidentifier;
 
-      console.log('Fetching favorites for userId:', userId);
-      console.log('Token:', token);
-
       const response = await fetch(
         `http://localhost:7000/favorite/user-favorites/${userId}`,
         {
@@ -35,22 +37,13 @@ const FavoritesPage: FC = () => {
         }
       );
 
-      console.log('Response status:', response.status);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Error response:', errorText);
         throw new Error(`Failed to fetch favorites: ${errorText}`);
       }
 
       const result = await response.json();
-      console.log('Favorites result:', result);
-
-      // Ensure we're accessing the correct property
       const favoriteSongs = result.data || result || [];
-      console.log('Favorite songs:', favoriteSongs);
-
       setFavorites(favoriteSongs);
     } catch (err) {
       console.error('Error fetching favorites:', err);
@@ -65,11 +58,7 @@ const FavoritesPage: FC = () => {
   }, []);
 
   const handlePlayPause = (song: Song) => {
-    if (currentlyPlaying === song.id) {
-      setCurrentlyPlaying(null);
-    } else {
-      setCurrentlyPlaying(song.id);
-    }
+    onSongSelect(song);
   };
 
   if (loading) {
@@ -95,7 +84,7 @@ const FavoritesPage: FC = () => {
             <FavoriteMusicCard
               key={song.id}
               song={song}
-              isPlaying={currentlyPlaying === song.id}
+              isPlaying={currentSong?.id === song.id && isPlaying}
               onPlayPause={handlePlayPause}
               onRemoveFromFavorites={fetchFavorites}
             />
