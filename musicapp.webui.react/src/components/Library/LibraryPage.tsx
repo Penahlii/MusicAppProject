@@ -34,6 +34,10 @@ const LibraryPage: FC<LibraryPageProps> = ({ onSongSelect, currentSong, isPlayin
       });
 
       if (!response.ok) {
+        if (response.status === 404) {
+          setSongs([]);
+          return;
+        }
         throw new Error('Failed to fetch songs');
       }
 
