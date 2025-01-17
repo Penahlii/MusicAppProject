@@ -3,6 +3,7 @@ import { BsPlayFill, BsPauseFill, BsMusicNote, BsTrash, BsDownload, BsPlus } fro
 import { Song } from '../../types/music';
 import { Playlist } from '../../types/playlist';
 import { parseJwt } from '../../utils/auth';
+import FavoriteButton from '../Common/FavoriteButton';
 import ContextMenu from '../Common/ContextMenu';
 import '../../styles/Library.css';
 
@@ -11,6 +12,7 @@ interface MusicCardProps {
   isPlaying: boolean;
   onPlayPause: (song: Song) => void;
   onDelete: (songId: string) => void;
+  onFavoriteChange: () => void;
   showDeleteButton?: boolean;
   showDownloadButton?: boolean;
 }
@@ -18,8 +20,9 @@ interface MusicCardProps {
 const MusicCard: FC<MusicCardProps> = ({ 
   song, 
   isPlaying, 
-  onPlayPause, 
+  onPlayPause,
   onDelete,
+  onFavoriteChange,
   showDeleteButton = false,
   showDownloadButton = false
 }) => {
@@ -39,10 +42,10 @@ const MusicCard: FC<MusicCardProps> = ({
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    const claims = parseJwt(token);
-    const userId = claims.nameidentifier;
-
     try {
+      const claims = parseJwt(token);
+      const userId = claims.nameidentifier;
+
       const response = await fetch(`http://localhost:7000/playlist/user-playlists/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -103,7 +106,6 @@ const MusicCard: FC<MusicCardProps> = ({
   };
 
   const handleDelete = async (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
     setIsDeleting(true);
     try {
@@ -114,25 +116,12 @@ const MusicCard: FC<MusicCardProps> = ({
   };
 
   const handleDownload = async (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
+    if (isDownloading) return;
+
     try {
       setIsDownloading(true);
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('No token found');
-      }
-
-      const response = await fetch(`http://localhost:7000/song/download/${song.id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to download song');
-      }
-
+      const response = await fetch(song.filePath);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -144,7 +133,6 @@ const MusicCard: FC<MusicCardProps> = ({
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading song:', error);
-      alert('Failed to download song. Please try again.');
     } finally {
       setIsDownloading(false);
     }
@@ -185,11 +173,11 @@ const MusicCard: FC<MusicCardProps> = ({
             )}
           </button>
         </div>
-        <div className="music-card-info">
-          <h3>{song.title}</h3>
-          <p>{song.artist}</p>
-        </div>
         <div className="music-card-actions">
+          <FavoriteButton
+            musicId={song.id}
+            onFavoriteChange={onFavoriteChange}
+          />
           {showDeleteButton && (
             <button
               className="action-button delete-button"
@@ -215,6 +203,10 @@ const MusicCard: FC<MusicCardProps> = ({
             </button>
           )}
         </div>
+        <div className="music-card-info">
+          <h3>{song.title}</h3>
+          <p>{song.artist}</p>
+        </div>
       </div>
 
       {contextMenu && (
@@ -223,26 +215,25 @@ const MusicCard: FC<MusicCardProps> = ({
           y={contextMenu.y}
           onClose={() => setContextMenu(null)}
         >
-          <div className="context-menu-item">
-            Add to Playlist
-            <div className="context-menu-submenu">
-              {playlists.length === 0 ? (
-                <div className="no-playlists-message">
-                  Create a playlist first!
-                </div>
-              ) : (
-                playlists.map(playlist => (
-                  <div
+          <div className="context-menu-content">
+            <h3>Add to Playlist</h3>
+            {playlists.length === 0 ? (
+              <p>You don't have any playlists yet. Create one first!</p>
+            ) : (
+              <div className="playlist-list">
+                {playlists.map((playlist) => (
+                  <button
                     key={playlist.id}
-                    className="context-menu-item"
+                    className="playlist-item"
                     onClick={() => handleAddToPlaylist(playlist.id)}
+                    disabled={isAddingToPlaylist}
                   >
-                    <BsPlus style={{ marginRight: '8px' }} />
+                    <BsPlus className="playlist-icon" />
                     {playlist.title}
-                  </div>
-                ))
-              )}
-            </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </ContextMenu>
       )}
