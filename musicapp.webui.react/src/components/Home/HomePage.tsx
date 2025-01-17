@@ -41,6 +41,10 @@ const HomePage = ({ onSongSelect, currentSong, isPlaying }: HomePageProps) => {
       });
 
       if (!response.ok) {
+        if (response.status === 404) {
+          setSongs([]);
+          return;
+        }
         throw new Error('Failed to fetch songs');
       }
 
@@ -83,7 +87,7 @@ const HomePage = ({ onSongSelect, currentSong, isPlaying }: HomePageProps) => {
 
       {songs.length === 0 ? (
         <div className="no-songs">
-          <p>No songs available to display.</p>
+          <p>No music has been shared yet. Be the first to share your favorite tunes!</p>
         </div>
       ) : (
         <div className="music-grid">
